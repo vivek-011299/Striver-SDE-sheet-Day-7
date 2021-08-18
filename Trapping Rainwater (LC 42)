@@ -1,0 +1,49 @@
+/*
+*
+Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.
+*
+Sample input :-
+Input: height = [0,1,0,2,1,0,1,3,2,1,2,1]
+Output: 6
+Explanation: The above elevation map (black section) is represented by array [0,1,0,2,1,0,1,3,2,1,2,1]. In this case, 6 units of rain water (blue section) are being trapped.
+*
+*
+*/
+
+
+Solution :-
+void left(vector<int> height,vector<int> &mxl)
+    {
+        int mx=height[0];
+        mxl.push_back(height[0]);
+        for(int j=1;j<height.size();j++)
+        {
+            mx=max(mx,height[j]);
+            mxl.push_back(mx);
+        }
+    }
+    void right(vector<int> height,vector<int> &mxr)
+    {
+        int mx=height[height.size()-1];
+        mxr.push_back(height[height.size()-1]);
+        for(int j=height.size()-2;j>=0;j--)
+        {
+            mx=max(mx,height[j]);
+            mxr.push_back(mx);
+        }
+        reverse(mxr.begin(),mxr.end());
+    }
+    int trap(vector<int>& height) {
+        int area=0;
+        int res=0;
+        vector<int> mxl;
+        vector<int> mxr;
+         left(height,mxl);
+            right(height,mxr);
+        for(int i=0;i<height.size();i++)
+        {
+            area = min(mxl[i],mxr[i]) - height[i];
+            res+=area;
+        }
+        return res;
+    }
